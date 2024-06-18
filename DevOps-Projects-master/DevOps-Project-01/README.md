@@ -120,7 +120,9 @@ Deploy AWS Infrastructure resources as shown in the above architecture.
 1. Verify you as an administrator able to login to EC2 instances from session manager & from Bastion Host.
 2. Verify if you as an end user able to access application from public internet browser.
 
-=======================================================================================================================================================================================================
+================================================================================================================================
+**VPC Deployment Steps :**
+
 
 Let's break down each step of the network setup, focusing on creating and configuring Virtual Private Clouds (VPCs), NAT Gateways, Transit Gateways, and Internet Gateways within AWS to establish a highly available and scalable architecture. This involves creating two VPCs, configuring subnets, and setting up gateways for both public and private communication.
 
