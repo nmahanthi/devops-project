@@ -120,8 +120,113 @@ Deploy AWS Infrastructure resources as shown in the above architecture.
 1. Verify you as an administrator able to login to EC2 instances from session manager & from Bastion Host.
 2. Verify if you as an end user able to access application from public internet browser.
 
+=======================================================================================================================================================================================================
+
+Let's break down each step of the network setup, focusing on creating and configuring Virtual Private Clouds (VPCs), NAT Gateways, Transit Gateways, and Internet Gateways within AWS to establish a highly available and scalable architecture. This involves creating two VPCs, configuring subnets, and setting up gateways for both public and private communication.
+
+1. Build VPC Network (192.168.0.0/16) for Bastion Host Deployment
+A Bastion Host is a server used to access instances in a private network securely.
+
+Create VPC for Bastion Host:
+
+Navigate to the VPC dashboard in the AWS Management Console.
+Click on "Create VPC."
+Name the VPC (e.g., "BastionHostVPC").
+Set the IPv4 CIDR block to 192.168.0.0/16.
+Choose appropriate settings for IPv6 CIDR block and tenancy (default).
+Create Subnets:
+
+Create a public subnet within this VPC (e.g., 192.168.1.0/24).
+Update Route Table for Public Subnet:
+
+Associate the subnet with a route table that directs internet-bound traffic to an Internet Gateway.
+2. Build VPC Network (172.32.0.0/16) for Highly Available and Auto Scalable Application Servers
+This VPC will host your application servers in a highly available and scalable setup.
+
+Create VPC for Application Servers:
+
+Navigate to the VPC dashboard.
+Click "Create VPC."
+Name the VPC (e.g., "AppServersVPC").
+Set the IPv4 CIDR block to 172.32.0.0/16.
+Choose settings for IPv6 CIDR block and tenancy as needed.
+Create Subnets:
+
+Create public subnets (e.g., 172.32.1.0/24) in different availability zones for load balancing and fault tolerance.
+Create private subnets (e.g., 172.32.2.0/24) in different availability zones.
+Update Route Table for Public Subnet:
+
+Associate the public subnets with a route table that directs traffic to an Internet Gateway.
+3. Create NAT Gateway in Public Subnet and Update Private Subnet Route Table
+To allow instances in private subnets to access the internet for updates, etc.
+
+Create NAT Gateway:
+
+Navigate to the NAT Gateway section in the VPC dashboard.
+Click "Create NAT Gateway."
+Select a public subnet (e.g., 172.32.1.0/24).
+Allocate an Elastic IP Address.
+Update Route Table for Private Subnet:
+
+Find the route table associated with the private subnet (e.g., 172.32.2.0/24).
+Add a route that directs 0.0.0.0/0 to the NAT Gateway.
+4. Create Transit Gateway and Associate Both VPCs
+A Transit Gateway allows multiple VPCs to communicate with each other.
+
+Create Transit Gateway:
+
+Navigate to the Transit Gateway section in the VPC dashboard.
+Click "Create Transit Gateway."
+Configure the Transit Gateway as needed.
+Associate VPCs to Transit Gateway:
+
+Navigate to the Transit Gateway Attachments section.
+Click "Create Transit Gateway Attachment."
+Select both VPCs (BastionHostVPC and AppServersVPC) to attach to the Transit Gateway.
+Update Route Tables:
+
+Update route tables in both VPCs to direct traffic intended for the other VPC to the Transit Gateway.
+5. Create Internet Gateway for Each VPC
+Internet Gateways provide internet access for public subnets.
+
+Create Internet Gateway:
+
+Navigate to the Internet Gateway section.
+Click "Create Internet Gateway."
+Name the Internet Gateway (e.g., "BastionHostIGW" and "AppServersIGW").
+Attach each Internet Gateway to its respective VPC (192.168.0.0/16 and 172.32.0.0/16).
+Update Route Table for Public Subnet:
+
+In each VPC, update the route table for public subnets to route 0.0.0.0/0 traffic to the Internet Gateway.
+
+Summary Diagram : - 
+
+                                    +-------------------------+
+                                    |      Transit Gateway    |
+                                    +----------+--------------+
+                                               |
+                                               |
++-------------------------+          +----------+-------------+
+|  BastionHostVPC         |          |  AppServersVPC         |
+|  CIDR: 192.168.0.0/16   |          |  CIDR: 172.32.0.0/16   |
+|                         |          |                        |
+|  +-----------------+    |          |  +-----------------+   |
+|  | Public Subnet   |    |          |  | Public Subnet   |   |
+|  | 192.168.1.0/24  |----+----------+--| 172.32.1.0/24   |   |
+|  | IGW             |    |          |  | IGW             |   |
+|  +-----------------+    |          |  +-----------------+   |
+|                         |          |                        |
+|  +-----------------+    |          |  +-----------------+   |
+|  | Private Subnet  |    |          |  | Private Subnet  |   |
+|  | 192.168.2.0/24  |    |          |  | 172.32.2.0/24   |   |
+|  |                 |    |          |  | NAT Gateway     |   |
+|  +-----------------+    |          |  +-----------------+   |
+|                         |          |                        |
++-------------------------+          +------------------------+
+
+
 # Hit the Star! ⭐
 
 ***If you are planning to use this repo for learning, please hit the star. Thanks!***
 
-#### Author by [Harshhaa Reddy](https://github.com/NotHarshhaa)
+#### Author by [Narendra Mahanthi](https://github.com/nmahanthi)
