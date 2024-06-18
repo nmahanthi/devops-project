@@ -127,14 +127,15 @@ Let's break down each step of the network setup, focusing on creating and config
 1. Build VPC Network (192.168.0.0/16) for Bastion Host Deployment
 A Bastion Host is a server used to access instances in a private network securely.
 
-Create VPC for Bastion Host:
+**Create VPC for Bastion Host:**
 
 Navigate to the VPC dashboard in the AWS Management Console.
 Click on "Create VPC."
 Name the VPC (e.g., "BastionHostVPC").
 Set the IPv4 CIDR block to 192.168.0.0/16.
 Choose appropriate settings for IPv6 CIDR block and tenancy (default).
-Create Subnets:
+
+**Create Subnets:**
 
 Create a public subnet within this VPC (e.g., 192.168.1.0/24).
 Update Route Table for Public Subnet:
@@ -143,37 +144,40 @@ Associate the subnet with a route table that directs internet-bound traffic to a
 2. Build VPC Network (172.32.0.0/16) for Highly Available and Auto Scalable Application Servers
 This VPC will host your application servers in a highly available and scalable setup.
 
-Create VPC for Application Servers:
+**Create VPC for Application Servers:**
 
 Navigate to the VPC dashboard.
 Click "Create VPC."
 Name the VPC (e.g., "AppServersVPC").
 Set the IPv4 CIDR block to 172.32.0.0/16.
 Choose settings for IPv6 CIDR block and tenancy as needed.
-Create Subnets:
+
+**Create Subnets:**
 
 Create public subnets (e.g., 172.32.1.0/24) in different availability zones for load balancing and fault tolerance.
 Create private subnets (e.g., 172.32.2.0/24) in different availability zones.
-Update Route Table for Public Subnet:
+
+**Update Route Table for Public Subnet:**
 
 Associate the public subnets with a route table that directs traffic to an Internet Gateway.
 3. Create NAT Gateway in Public Subnet and Update Private Subnet Route Table
 To allow instances in private subnets to access the internet for updates, etc.
 
-Create NAT Gateway:
+**Create NAT Gateway:**
 
 Navigate to the NAT Gateway section in the VPC dashboard.
 Click "Create NAT Gateway."
 Select a public subnet (e.g., 172.32.1.0/24).
 Allocate an Elastic IP Address.
-Update Route Table for Private Subnet:
+
+**Update Route Table for Private Subnet:**
 
 Find the route table associated with the private subnet (e.g., 172.32.2.0/24).
 Add a route that directs 0.0.0.0/0 to the NAT Gateway.
 4. Create Transit Gateway and Associate Both VPCs
 A Transit Gateway allows multiple VPCs to communicate with each other.
 
-Create Transit Gateway:
+**Create Transit Gateway:**
 
 Navigate to the Transit Gateway section in the VPC dashboard.
 Click "Create Transit Gateway."
@@ -183,13 +187,14 @@ Associate VPCs to Transit Gateway:
 Navigate to the Transit Gateway Attachments section.
 Click "Create Transit Gateway Attachment."
 Select both VPCs (BastionHostVPC and AppServersVPC) to attach to the Transit Gateway.
-Update Route Tables:
+
+**Update Route Tables:**
 
 Update route tables in both VPCs to direct traffic intended for the other VPC to the Transit Gateway.
 5. Create Internet Gateway for Each VPC
 Internet Gateways provide internet access for public subnets.
 
-Create Internet Gateway:
+**Create Internet Gateway:**
 
 Navigate to the Internet Gateway section.
 Click "Create Internet Gateway."
@@ -200,6 +205,8 @@ Update Route Table for Public Subnet:
 In each VPC, update the route table for public subnets to route 0.0.0.0/0 traffic to the Internet Gateway.
 
 Summary Diagram : - 
+
+
 ![image](https://github.com/nmahanthi/devops-project/assets/77907025/be5406aa-8407-4786-8732-1aa889b96931)
 
             
