@@ -200,30 +200,9 @@ Update Route Table for Public Subnet:
 In each VPC, update the route table for public subnets to route 0.0.0.0/0 traffic to the Internet Gateway.
 
 Summary Diagram : - 
+![image](https://github.com/nmahanthi/devops-project/assets/77907025/be5406aa-8407-4786-8732-1aa889b96931)
 
-                                    +-------------------------+
-                                    |      Transit Gateway    |
-                                    +----------+--------------+
-                                               |
-                                               |
-+-------------------------+          +----------+-------------+
-|  BastionHostVPC         |          |  AppServersVPC         |
-|  CIDR: 192.168.0.0/16   |          |  CIDR: 172.32.0.0/16   |
-|                         |          |                        |
-|  +-----------------+    |          |  +-----------------+   |
-|  | Public Subnet   |    |          |  | Public Subnet   |   |
-|  | 192.168.1.0/24  |----+----------+--| 172.32.1.0/24   |   |
-|  | IGW             |    |          |  | IGW             |   |
-|  +-----------------+    |          |  +-----------------+   |
-|                         |          |                        |
-|  +-----------------+    |          |  +-----------------+   |
-|  | Private Subnet  |    |          |  | Private Subnet  |   |
-|  | 192.168.2.0/24  |    |          |  | 172.32.2.0/24   |   |
-|  |                 |    |          |  | NAT Gateway     |   |
-|  +-----------------+    |          |  +-----------------+   |
-|                         |          |                        |
-+-------------------------+          +------------------------+
-
+            
 
 # Hit the Star! ⭐
 
