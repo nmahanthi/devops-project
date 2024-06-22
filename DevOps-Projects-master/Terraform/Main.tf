@@ -1,13 +1,8 @@
 provider "aws" {
-    region = "us-east-1"  
+    region = "us-east-1"  # Set your desired AWS region
 }
 
-resource "aws_instance" "my_ec2_instance" {
-    ami           = "var.ami_id"  
-    instance_type = "var.instance_type"
-    subnet_id = "var.subnet_id"
-    key_pair_name = "var.key_pair_name"
-      subnet_id = "var.subnet_id"
-      instance_name = "var.instance_name"
-      hosted_zone_name = "var.hosted_zone_name"
+resource "aws_instance" "example" {
+    ami           = "ami-0c55b159cbfafe1f0"  # Specify an appropriate AMI ID
+    instance_type = "t3.micro"
 }
