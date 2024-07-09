@@ -8,6 +8,7 @@ resource "aws_instance" "example" {
 }
 
 resource "aws_default_vpc" "default" {
+    vpc_id = aws_vpc.my-vpc.id
   tags = {
     Name = "Default VPC"
   }
